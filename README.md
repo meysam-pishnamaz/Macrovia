@@ -25,5 +25,5 @@
 
 1. Clone the repo:
    ```bash
-   git clone https://github.com/your-username/nutrient-tracker.git
+   git clone https://github.com/meysam-pishnamaz/Macrovia.git
    cd nutrient-tracker
