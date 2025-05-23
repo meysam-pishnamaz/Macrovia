@@ -1,6 +1,6 @@
-# Nutrient Tracker
+# Macrovia
 
-**Nutrient Tracker** is a personalized Android app that helps users monitor their daily intake of calories, protein, vitamins, and other essential nutrients. Users input personal data such as age, sex, height, weight, and goals (e.g., weight loss, muscle gain, maintenance), and the app generates daily nutrition targets accordingly.
+**Macrovia** is a personalized Android app that helps users monitor their daily intake of calories, protein, vitamins, and other essential nutrients. Users input personal data such as age, sex, height, weight, and goals (e.g., weight loss, muscle gain, maintenance), and the app generates daily nutrition targets accordingly.
 
 ## Features
 
@@ -8,7 +8,6 @@
 - 🍽️ **Food Logging** — Add meals, snacks, and custom foods with nutrition details.
 - 📊 **Progress Insights** — Compare intake vs. daily goals with real-time feedback.
 - 🧠 **Smart Feedback** — Get alerts when you're under or over your nutritional targets.
-- 🇮🇷 **Localized Design** — Tailored with regional dietary habits in mind.
 
 ## Screenshots
 > _Coming soon_
