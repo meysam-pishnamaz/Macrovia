@@ -1,16 +1,13 @@
-package com.dante.Macrovia
+package com.dante.macrovia.ui.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -20,9 +17,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.dante.macrovia.R
+import com.dante.macrovia.ui.components.CustomMaxWidthButton
 
 @Composable
-fun OnboardingScreen(modifier: Modifier = Modifier, onGetStartedClicked: () -> Unit) {
+fun LandingScreen(modifier: Modifier = Modifier, onGetStartedClicked: () -> Unit) {
     Column(
         modifier = modifier
             .padding(32.dp)
@@ -53,13 +52,8 @@ fun OnboardingScreen(modifier: Modifier = Modifier, onGetStartedClicked: () -> U
             Spacer(Modifier.height(12.dp))
             Text("Macrovia", style = MaterialTheme.typography.displayLarge)
         }
-        Button(
-            onClick = onGetStartedClicked,
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(56.dp)
-        ) {
-            Text("Get Started", style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold))
+        CustomMaxWidthButton(label = "Get Started") {
+            onGetStartedClicked()
         }
     }
 }
