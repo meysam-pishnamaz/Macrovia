@@ -26,7 +26,7 @@ class UserProfileViewModel  @Inject constructor(
     private val prefs: SharedPrefsRepository
 ): ViewModel() {
 
-    private val _selectedUnit = MutableStateFlow(Units.Imperial)
+    private val _selectedUnit = MutableStateFlow(Units.Metric)
     val selectedUnit: StateFlow<Units> = _selectedUnit
 
     private val _userFirstName = MutableStateFlow("")
@@ -128,7 +128,6 @@ class UserProfileViewModel  @Inject constructor(
 
     fun validateAndSubmit(
         onSuccess: () -> Unit,
-        onFailure: () -> Unit
     ) {
         val isImperial = selectedUnit.value == Units.Imperial
 
@@ -140,15 +139,13 @@ class UserProfileViewModel  @Inject constructor(
 
         if (error != null) {
             setFormError(error)
-            onFailure()
         } else {
-            submit(onSuccess, onFailure)
+            submit(onSuccess)
         }
     }
 
-    fun submit(
+    private fun submit(
         onSuccessfulSubmit: () -> Unit,
-        onFailedSubmit: () -> Unit
     ) {
         val formatter = SimpleDateFormat("yyyy-MM-dd", Locale.US).apply {
             isLenient = false
@@ -158,7 +155,6 @@ class UserProfileViewModel  @Inject constructor(
             formatter.parse(birthday.value)
         } catch (e: Exception) {
             setFormError("Invalid date format. Please use yyyy-MM-dd.")
-            onFailedSubmit()
             return
         }
 
@@ -167,23 +163,17 @@ class UserProfileViewModel  @Inject constructor(
 
         try {
             if (selectedUnit.value == Units.Imperial) {
-                val feet = heightInFeet.value.toIntOrNull()
-                    ?: throw IllegalArgumentException("Height (feet) is invalid.")
-                val inches = heightInInches.value.toIntOrNull() ?: 0
-                val pounds = weightInPounds.value.toDoubleOrNull()
-                    ?: throw IllegalArgumentException("Weight (lbs) is invalid.")
-
+                val feet = heightInFeet.value.toInt()
+                val inches = heightInInches.value.toInt()
+                val pounds = weightInPounds.value.toDouble()
                 heightCm = feetAndInchesToCm(feet, inches)
                 weightKg = lbsToKg(pounds)
             } else {
-                heightCm = heightInCm.value.toDoubleOrNull()
-                    ?: throw IllegalArgumentException("Height (cm) is invalid.")
-                weightKg = weightInKg.value.toDoubleOrNull()
-                    ?: throw IllegalArgumentException("Weight (kg) is invalid.")
+                heightCm = heightInCm.value.toDouble()
+                weightKg = weightInKg.value.toDouble()
             }
         } catch (e: IllegalArgumentException) {
             setFormError(e.message ?: "Invalid input.")
-            onFailedSubmit()
             return
         }
 

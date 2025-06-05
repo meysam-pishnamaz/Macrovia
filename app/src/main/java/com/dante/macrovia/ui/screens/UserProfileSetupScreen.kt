@@ -4,8 +4,11 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -25,6 +28,9 @@ import com.dante.macrovia.model.Units
 import com.dante.macrovia.viewmodel.UserProfileViewModel
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.dante.macrovia.model.ActivityLevel
 import com.dante.macrovia.model.Gender
@@ -42,6 +48,7 @@ import com.dante.macrovia.ui.components.WeightInputField
 fun UserProfileSetupScreen(
     modifier: Modifier = Modifier,
     onBackClicked: () -> Unit,
+    onSuccessfulSubmit: () -> Unit
 ) {
     val viewModel: UserProfileViewModel = hiltViewModel()
     val selectedUnit by viewModel.selectedUnit.collectAsState()
@@ -60,9 +67,11 @@ fun UserProfileSetupScreen(
     val showDialog by viewModel.showFormErrorDialog.collectAsState()
 
     val scrollState = rememberScrollState()
+    var isBackPressed by remember { mutableStateOf(false) }
 
     Column(
         modifier = modifier
+            .padding(bottom = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding())
             .fillMaxSize(),
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -71,7 +80,15 @@ fun UserProfileSetupScreen(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            IconButton(onClick = onBackClicked) {
+            IconButton(
+                onClick = {
+                    if (!isBackPressed) {
+                        isBackPressed = true
+                        onBackClicked()
+                    }
+                },
+                enabled = !isBackPressed
+            ) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                     contentDescription = "Back"
@@ -94,7 +111,7 @@ fun UserProfileSetupScreen(
                 .padding(top = 10.dp)
                 .fillMaxSize()
                 .verticalScroll(scrollState),
-            verticalArrangement = Arrangement.spacedBy(18.dp)
+            verticalArrangement = Arrangement.spacedBy(42.dp)
         ){
             CustomTextField(
                 titleText = "What’s your first name?",
@@ -182,17 +199,16 @@ fun UserProfileSetupScreen(
                     viewModel.onActivityLevelChanged(it) },
                 labelMapper = { activityLevel ->
                     when (activityLevel) {
-                        ActivityLevel.Sedentary -> "Sedentary"
-                        ActivityLevel.LightlyActive -> "Lightly active"
-                        ActivityLevel.Active -> "Active"
-                        ActivityLevel.VeryActive -> "Very active"
+                        ActivityLevel.Sedentary -> "Very Low Activity \n(0 days/week)"
+                        ActivityLevel.LightlyActive -> "Light Activity \n(1–2 days/week)"
+                        ActivityLevel.Active -> "Moderate Activity \n(3–5 days/week)"
+                        ActivityLevel.VeryActive -> "High Activity \n(6–7 days/week)"
                     }
                 }
             )
             CustomMaxWidthButton(label = "Submit") {
                 viewModel.validateAndSubmit(
-                    onSuccess = { /* navigate or show success */ },
-                    onFailure = { /* optional logging */ }
+                    onSuccess = onSuccessfulSubmit
                 )
             }
         }

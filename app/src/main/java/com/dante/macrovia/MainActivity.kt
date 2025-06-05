@@ -43,7 +43,7 @@ fun NavigationHost() {
 
     Scaffold { innerPadding ->
         NavHost(navController = navController, startDestination = if (userExists) Screen.DASHBOARD else Screen.LANDING_SCREEN,
-            modifier = Modifier.padding(innerPadding)
+            modifier = Modifier.padding(top = innerPadding.calculateTopPadding())
         ) {
             composable(Screen.LANDING_SCREEN) { LandingScreen(
                 onGetStartedClicked = {
@@ -54,6 +54,12 @@ fun NavigationHost() {
                 UserProfileSetupScreen(
                     onBackClicked = {
                         navController.popBackStack()
+                    },
+                    onSuccessfulSubmit = {
+                        navController.navigate(Screen.DASHBOARD) {
+                            popUpTo(0) { inclusive = true }
+                            launchSingleTop = true
+                        }
                     }
                 )
             }
