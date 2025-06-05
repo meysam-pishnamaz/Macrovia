@@ -53,32 +53,3 @@ fun FormErrorDialogModal(
         }
     }
 }
-
-@Preview
-@Composable
-fun FormErrorDialogOverlayPreview() {
-    MacroviaTheme {
-        Box(
-            modifier = Modifier.fillMaxSize()
-        ) {
-            // Background content
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(16.dp),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                repeat(10) {
-                    Text("hellooooooo $it")
-                }
-            }
-
-            // Overlay dialog
-            FormErrorDialogModal(
-                message = "This is a form error message",
-                onDismiss = {}
-            )
-        }
-    }
-}
